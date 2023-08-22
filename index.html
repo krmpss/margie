@@ -2,64 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>3D Cube Builder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Scene with OrbitControls</title>
     <style>
         body { margin: 0; }
         canvas { display: block; }
     </style>
 </head>
 <body>
-    <script src="three.js"></script>
-    <script src="OrbitControls.js"></script>
-    <script>
-        let scene, camera, renderer;
-        let controls;
-        
-        init();
-        animate();
 
-        function init() {
-            scene = new three.Scene();
-            camera = new three.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 5;
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script type="module">
+    import { OrbitControls } from 'https://[your-github-username].github.io/[your-repository-name]/OrbitControls.js';
 
-            renderer = new three.WebGLRenderer({ antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.body.appendChild(renderer.domElement);
+    let scene = new THREE.Scene();
+    let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    let renderer = new THREE.WebGLRenderer({ antialias: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-            controls = new three.OrbitControls(camera, renderer.domElement);
-            
-            const light = new three.AmbientLight(0x404040); 
-            scene.add(light);
+    camera.position.z = 5;
+    const controls = new OrbitControls(camera, renderer.domElement);
 
-            const directionalLight = new three.DirectionalLight(0xffffff, 0.5);
-            directionalLight.position.set(1, 1, 1);
-            scene.add(directionalLight);
-
-            window.addEventListener('mousedown', addCube, false);
-        }
-
-        function addCube(event) {
-            const x = (event.clientX / window.innerWidth) * 2 - 1;
-            const y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-            const vector = new three.Vector3(x, y, 0.5).unproject(camera);
-            const dir = vector.sub(camera.position).normalize();
-            const distance = -camera.position.z / dir.z;
-            const pos = camera.position.clone().add(dir.multiplyScalar(distance));
-
-            const geometry = new three.BoxGeometry(0.5, 0.5, 0.5);
-            const material = new three.MeshBasicMaterial({ color: 0x00ff00 });
-            const cube = new three.Mesh(geometry, material);
-
-            cube.position.set(pos.x, pos.y, 0);
-            scene.add(cube);
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-        }
-    </script>
+    function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+    }
+    animate();
+</script>
 </body>
 </html>
