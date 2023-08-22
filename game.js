@@ -20,4 +20,30 @@ let cubes = [];
 document.addEventListener('click', function(event) {
     // Get clicked position in the 3D space
     const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-    const mouseY = -(event.clientY / window.innerHeight) * 2 +
+    const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    const vector = new THREE.Vector3(mouseX, mouseY, 0.5);
+    vector.unproject(camera);
+
+    const raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+    const intersects = raycaster.intersectObjects(cubes);
+
+    if (intersects.length > 0) {
+        // Remove the cube
+        scene.remove(intersects[0].object);
+        cubes = cubes.filter(cube => cube !== intersects[0].object);
+    } else {
+        // Add a cube
+        const cube = new THREE.Mesh(geometry, material);
+        cube.position.set(Math.floor(vector.x), Math.floor(vector.y), Math.floor(vector.z));
+        cubes.push(cube);
+        scene.add(cube);
+    }
+});
+
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
+
+animate();
