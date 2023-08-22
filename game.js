@@ -1,58 +1,67 @@
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+let scene, camera, renderer, controls, raycaster, mouse, INTERSECTED;
+const cubes = [];
 
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = 0.25;
+init();
+animate();
 
-const light = new THREE.AmbientLight(0x888888);
-scene.add(light);
+function init() {
+    scene = new THREE.Scene();
 
-const directionalLight = new THREE.DirectionalLight(0xffffff);
-directionalLight.position.set(1, 1.5, 1);
-scene.add(directionalLight);
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(25, 25, 50);
+    camera.lookAt(25, 25, 25);
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
-let cubes = [];
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-camera.position.z = 60;
-camera.position.y = 30;
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-// Grid helper for better orientation
-const gridHelper = new THREE.GridHelper(50, 50);
-scene.add(gridHelper);
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2();
 
-document.addEventListener('click', function(event) {
-    const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-    const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xaaaaaa);
+    scene.add(ambientLight);
 
-    const vector = new THREE.Vector3(mouseX, mouseY, 0.5);
-    vector.unproject(camera);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(1, 1, 1);
+    scene.add(directionalLight);
 
-    const raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-    const intersects = raycaster.intersectObjects(cubes);
+    window.addEventListener('click', onDocumentMouseClick, false);
+}
+
+function onDocumentMouseClick(event) {
+    event.preventDefault();
+
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+    
+    const intersects = raycaster.intersectObjects(scene.children);
 
     if (intersects.length > 0) {
-        // Remove the cube
-        scene.remove(intersects[0].object);
-        cubes = cubes.filter(cube => cube !== intersects[0].object);
-    } else {
-        // Add a cube
-        const cube = new THREE.Mesh(geometry, material);
-        cube.position.set(Math.round(vector.x), Math.round(vector.y), Math.round(vector.z));
-        cubes.push(cube);
-        scene.add(cube);
+        // Check if a cube is clicked
+        const clickedObject = intersects[0].object;
+        if (cubes.includes(clickedObject)) {
+            scene.remove(clickedObject);
+            const index = cubes.indexOf(clickedObject);
+            cubes.splice(index, 1);
+        } else {
+            const cubeGeo = new THREE.BoxGeometry(1, 1, 1);
+            const cubeMat = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
+            const cube = new THREE.Mesh(cubeGeo, cubeMat);
+            cube.position.copy(intersects[0].point).add(intersects[0].face.normal);
+            cube.position.divideScalar(1).floor().multiplyScalar(1).addScalar(0.5);
+            scene.add(cube);
+            cubes.push(cube);
+        }
     }
-});
+}
 
 function animate() {
     requestAnimationFrame(animate);
     controls.update();
     renderer.render(scene, camera);
 }
-
-animate();
