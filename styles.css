@@ -55,6 +55,26 @@ h1, h2 {
     margin: 10px 0;
     font-size: 18px;
 }
+.running-text {
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    font-size: 24px;
+    letter-spacing: 3px;
+    animation: runningText 10s linear infinite;
+    color: #00ffff;
+    text-shadow: 3px 3px 0px #ff00ff; /* Retro-futuristic neon glow */
+    margin: 20px 0;
+}
+
+@keyframes runningText {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
 
 
 
