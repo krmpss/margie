@@ -65,6 +65,11 @@ h1, h2 {
     color: #00ffff;
     text-shadow: 3px 3px 0px #ff00ff; /* Retro-futuristic neon glow */
     margin: 20px 0;
+    z-index: 10; /* This will make sure it's above other elements */
+    position: absolute;
+    top: 50%; /* Adjust this to position the text vertically where you want it */
+    width: 100%; 
+    text-align: center;
 }
 
 @keyframes runningText {
