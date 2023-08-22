@@ -1,9 +1,8 @@
 let currentSlide = 0;
 const slides = document.querySelectorAll('.carousel-slide');
 
-// Initially show the first slide
 if (slides.length > 0) {
-    slides[0].style.display = 'block';
+    slides[0].style.display = 'block'; // This line should display the first slide.
 
     setInterval(() => {
         slides[currentSlide].style.display = 'none';
