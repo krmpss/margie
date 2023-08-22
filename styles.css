@@ -30,15 +30,22 @@ body, html {
 }
 
 .content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
-    padding: 20px;
-    border-radius: 5px;
+  /* Styling for the content div */
+    padding: 50px;
+    background-color: rgba(255, 255, 255, 0.8)
+}
+.parallax {
+    /* The image path should be replaced with your own image path */
+    background-image: url('path_to_your_custom_photo2.png');
+
+    /* Create the parallax effect with CSS */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    /* Height of the parallax container. Adjust this if needed */
+    height: 500px; 
 }
 
 h1, h2 {
