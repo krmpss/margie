@@ -1,5 +1,5 @@
 function redirectUser() {
-    window.location.href = 'https://www.yourcustomlink.com';
+    window.location.href = 'https://www.youtube.com/watch?v=VaE5qUe03mA';
 }
 
-document.getElementById('scrolling-text-content').textContent = 'Your 20 words text goes here...';
+document.getElementById('scrolling-text-content').textContent = 'Do you dare come to the party?';
