@@ -4,29 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro TV Interface</title>
+    <title>Video Interface</title>
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
 </head>
 
 <body>
     <div class="container">
-        <div class="tv-screen" onclick="redirectUser()">
-            <div class="interference"></div>
-        </div>
+        <video id="mainVideo" width="100%" height="auto" muted loop onclick="redirectUser()">
+            <source src="path_to_your_video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
         <div class="scrolling-text">
-            <p id="scrolling-text-content"></p>
+            <p id="scrolling-text-content">Your 20 words text goes here...</p>
         </div>
     </div>
-<video id="tvVideo" width="100%" height="100%">
-    <source src="path_to_your_video.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
-<video id="tvVideo" width="100%" height="100%" muted autoplay loop>
-    <source src="path_to_your_video.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
-
 </body>
 
 </html>
