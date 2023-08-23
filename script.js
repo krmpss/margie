@@ -8,3 +8,8 @@ document.getElementById('tvVideo').play();
 let videoElement = document.getElementById('tvVideo');
 videoElement.setAttribute('loop', 'true');
 videoElement.muted = true;  // this mutes the video, remove if you want sound
+let videoElement = document.getElementById('tvVideo');
+videoElement.play().catch(error => {
+    // Auto-play was prevented
+    // Show a UI element to let the user manually start playback
+});
