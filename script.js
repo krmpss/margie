@@ -3,3 +3,8 @@ function redirectUser() {
 }
 
 document.getElementById('scrolling-text-content').textContent = 'Do you dare to come to the party?';
+document.getElementById('tvVideo').play();
+
+let videoElement = document.getElementById('tvVideo');
+videoElement.setAttribute('loop', 'true');
+videoElement.muted = true;  // this mutes the video, remove if you want sound
